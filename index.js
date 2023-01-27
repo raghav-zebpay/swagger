@@ -2,21 +2,27 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require("morgan");
-// const low = require("lowdb");
+const fs = require("fs");
+const path = require('path');
+const jsYaml = require("js-yaml");
 const swaggerJSDoc = require('swagger-jsdoc')
 const swaggerUI = require('swagger-ui-express')
 const bookRouter = require("./routes/book")
+const apiSpec = path.join(__dirname, "./openApi.yaml")
 
-// import express from 'express'
-// import bodyParser from 'body-parser'
-// import cors from 'cors'
-// import morgan from "morgan"
-// import low from "lowdb"
-// import swaggerJSDoc from 'swagger-jsdoc'
-// import swaggerUI from 'swagger-ui-express'
-// import {bookRouter} from "./routes/book.js"
 
-// const FileSync = require("lowdb/adapters/FileSync");
+let schema
+
+
+function swagger() {
+    try {
+        schema = jsYaml.load(fs.readFileSync(apiSpec));
+    } catch (error) {
+        console.log("YAML load failed", error)
+    }
+}
+
+swagger()
 
 const app = express()
 app.use(bodyParser.json());
@@ -24,31 +30,12 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+
+
 app.use(cors({ origin: true }));
 
 
-const options = {
-    definition: {
-        openapi: "3.0.0",
-        info: {
-            title: "ETH-HOUSE",
-            version: "1.0.0",
-            description: " Learning swagger"
-        },
-        servers: [
-            {
-                url: "http://localhost:3000"
-            },
-        ],
-    },
-    apis: ["./routes/*.js"]
-}
-
-const specs = swaggerJSDoc(options)
-
-
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs))
-
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(schema))
 
 app.use("/books", bookRouter)
 
@@ -57,6 +44,6 @@ app.get("/", function (req, res) {
 })
 
 app.listen(3000, function (req, res) {
-    console.log("started")
-    // res.send("app is up and runnig")
+    // console.log("started")
+    console.log("app is up and running")
 })
