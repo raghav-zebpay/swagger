@@ -1,0 +1,65 @@
+/**
+ * @swagger
+ * /books/{id}:
+ *  put:
+ *    summary: Update the book by the id
+ *    tags: [Books]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The book id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Book'
+ *    responses:
+ *      200:
+ *        description: The book was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Book'
+ *      404:
+ *        description: The book was not found
+ *      500:
+ *        description: Some error happened
+ */
+
+
+
+/**
+ * @swagger
+ * /books/{id}:
+ *  put:
+ *   summary: Update an existing book
+ *   tags: [Books]
+ *   parameters:
+*          - in: path
+ *           name: id
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: The book id
+ *   requestBody:
+ *           required: true
+ *           content:
+ *              application/json:
+ *                 schema:
+ *                    $ref: '#/components/schemas/Book'
+ *   responses:
+ *            200:
+ *               description: book updated sucessfully
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                                  $ref: '#/components/schemas/Book'
+ *            404:
+ *                description: book not found
+ *            500:
+ *                description : server error
+ */
